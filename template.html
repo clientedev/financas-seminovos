@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CAOA Seminovos · Giro de estoque e custo do dinheiro · 05/11/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+/* =====================================================================
+   DADOS — edite os números aqui (sem mexer no layout).
+   Fonte: planilha Estoque_SN_0511 (posição 05/11/2026) e PPT do
+   Financeiro "Estoque VU – Capital, aging e custo financeiro" (28/10/2026).
+   ===================================================================== */
+const DADOS = __DADOS__;
+</script>
+<style>
+:root{
+  --navy:#1D184B; --navy2:#120E33; --navy3:#282163; --mint:#64C295; --mint2:#3BA06E; --mintL:#8FE3BA;
+  --blue:#154578; --bg:#F4F6F9; --card:#FFFFFF; --line:#E3E8F0; --ink:#1E2026; --mut:#5A6273; --mut2:#8A94A6;
+  --g:#2E9E5B; --y:#E3B341; --o:#E8833A; --r:#D64545; --w:#7A1F3D;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;background:#0B0920;color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+button,input,select{font-family:inherit}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- Barra superior ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--navy2);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:60;border-bottom:1px solid rgba(255,255,255,.08)}
+.tb-left{display:flex;align-items:center;gap:12px;min-width:0}
+.tb-title{font-size:13px;font-weight:600;color:#C5CEE0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-title b{color:#fff}
+.tb-right{display:flex;align-items:center;gap:6px}
+.tbtn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;height:34px;padding:0 12px;font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .2s,border-color .2s}
+.tbtn:hover{background:rgba(100,194,149,.18);border-color:var(--mint)}
+.tbtn:disabled{opacity:.35;cursor:default}
+.tbtn.on{background:var(--mint);color:var(--navy2);border-color:var(--mint)}
+.counter{font-size:12.5px;font-weight:700;color:#C5CEE0;min-width:52px;text-align:center}
+.progress{position:fixed;top:52px;left:0;height:3px;background:linear-gradient(90deg,var(--mint),var(--mintL));z-index:61;transition:width .45s ease}
+
+/* ---------- Palco 16:9 ---------- */
+#viewport{position:fixed;top:55px;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#stage{width:1600px;height:900px;flex:none;position:relative;transform-origin:center center;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.slide{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;padding:34px 56px 20px;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s;overflow:hidden}
+.slide.active{opacity:1;visibility:visible;z-index:2}
+
+/* Cabeçalho / rodapé dos slides */
+.sh{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;margin-bottom:22px}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--blue)}
+.tag i{width:22px;height:3px;background:var(--mint);border-radius:2px;display:inline-block}
+.title{font-size:34px;line-height:1.15;font-weight:800;color:var(--navy);margin:8px 0 6px;letter-spacing:-.6px}
+.insight{font-size:18px;color:var(--mut);font-weight:500;line-height:1.4;max-width:1150px}
+.insight b{color:var(--navy)}
+.hlogo{height:40px;flex:none;margin-top:4px}
+.sb{flex:1;min-height:0;display:flex;gap:22px}
+.sf{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-top:1px solid var(--line);padding-top:10px;margin-top:16px;font-size:11.5px;color:var(--mut2);line-height:1.45}
+.sf .pg{font-weight:800;color:var(--navy);white-space:nowrap}
+.sf code{font-family:inherit;background:#EEF1F6;padding:1px 6px;border-radius:4px;color:var(--mut)}
+
+/* Componentes */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:0 1px 2px rgba(16,24,40,.04),0 4px 14px rgba(16,24,40,.04);min-width:0}
+.card h3{margin:0 0 4px;font-size:17px;font-weight:800;color:var(--navy)}
+.card .hint{font-size:12.5px;color:var(--mut2);margin:0 0 14px}
+.col{display:flex;flex-direction:column;gap:22px;min-width:0}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.kpi .lbl{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mut2)}
+.kpi .val{font-size:54px;font-weight:900;color:var(--navy);letter-spacing:-1.5px;line-height:1.05;margin:10px 0 6px}
+.kpi .val small{font-size:20px;font-weight:700;color:var(--mut);letter-spacing:0}
+.kpi .sub{font-size:13.5px;color:var(--mut)}
+.kpi{border-top:4px solid var(--blue)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:#EEF1F6;color:var(--mut)}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.callout{border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.5;background:#F2FAF6;border:1px solid #CDEBDC;color:var(--ink)}
+.callout.warn{background:#FFF7EC;border-color:#F6D9B4}
+.callout.bad{background:#FCEFEF;border-color:#F2C9C9}
+.callout b{color:var(--navy)}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:700;font-size:13px;cursor:pointer;transition:transform .15s,background .2s}
+.btn:hover{background:var(--navy3);transform:translateY(-1px)}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--navy)}
+.seg{display:inline-flex;background:#EEF1F6;border-radius:9px;padding:3px}
+.seg button{border:0;background:transparent;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:700;color:var(--mut);cursor:pointer}
+.seg button.on{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:6px;color:#fff;white-space:nowrap}
+.mesa{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;font-weight:900;font-size:13px}
+.mA{background:#E3F4EA;color:#1F7A45}.mB{background:#E6F0FA;color:#154578}.mC{background:#FFF6DD;color:#8A6510}.mD{background:#FDEBDD;color:#A4511A}.mE{background:#FBE3E3;color:#9E2A2A}
+label.f{display:block;font-size:12.5px;font-weight:700;color:var(--mut);margin-bottom:6px}
+.inrow{margin-bottom:14px}
+.inrow .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.inrow .top b{font-size:15px;color:var(--navy)}
+input[type=range]{width:100%;accent-color:var(--navy);height:22px;cursor:pointer}
+input.tx,select.tx{width:100%;height:38px;border:1px solid var(--line);border-radius:9px;padding:0 12px;font-size:14px;font-weight:600;color:var(--ink);background:#fff}
+input.tx:focus,select.tx:focus{outline:2px solid rgba(100,194,149,.5);border-color:var(--mint)}
+
+/* Animações de entrada */
+.anim{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease;transition-delay:var(--d,0s)}
+.slide.in .anim{opacity:1;transform:none}
+.growx{transform:scaleX(0);transform-origin:left center;transition:transform .9s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
+.slide.in .growx{transform:scaleX(1)}
+.growy{transform:scaleY(0);transform-box:fill-box;transform-origin:center bottom;transition:transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
+.slide.in .growy{transform:scaleY(1)}
+[data-tip]{cursor:pointer}
+svg text{font-family:'Inter',sans-serif}
+
+/* ---------- CAPA (padrão app pai) ---------- */
+.slide.cover{background:linear-gradient(135deg,#18133E 0%,#100C2D 55%,#080618 100%);color:#fff;padding:56px 72px}
+.cover-mesh{position:absolute;inset:0;background-image:radial-gradient(rgba(100,194,149,.12) 1.5px,transparent 1.5px),radial-gradient(rgba(21,69,120,.15) 1.5px,transparent 1.5px);background-size:40px 40px;background-position:0 0,20px 20px;pointer-events:none}
+.cover-orb{position:absolute;top:-150px;right:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(100,194,149,.25) 0%,rgba(29,24,75,0) 70%);filter:blur(80px);pointer-events:none}
+.cover-orb2{position:absolute;bottom:-150px;left:100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(21,69,120,.35) 0%,rgba(29,24,75,0) 70%);filter:blur(80px);pointer-events:none}
+.cover-stripe{position:absolute;top:0;right:560px;width:8px;height:100%;background:linear-gradient(180deg,var(--mint) 0%,rgba(100,194,149,.2) 100%);transform:skewX(-20deg);box-shadow:0 0 20px rgba(100,194,149,.4);pointer-events:none}
+.cover-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr 420px;gap:110px;align-items:center;height:100%}
+.cover-brand{display:flex;align-items:center;gap:24px;margin-bottom:30px}
+.cover-brand img{height:72px}
+.cover-brand .div{height:38px;width:1px;background:rgba(255,255,255,.25)}
+.cover-brand span{font-size:13px;font-weight:700;color:#C5CEE0;letter-spacing:2px;text-transform:uppercase}
+.cover-tag{display:inline-flex;align-items:center;gap:10px;background:rgba(100,194,149,.12);border:1px solid rgba(100,194,149,.35);color:var(--mintL);font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;margin-bottom:22px}
+.cover-tag i{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)}
+.cover h1{font-size:60px;line-height:1.06;font-weight:900;letter-spacing:-1.8px;margin:0 0 20px}
+.cover h1 span{color:var(--mint)}
+.cover-desc{font-size:19px;line-height:1.55;color:#C5CEE0;max-width:860px;margin:0 0 34px}
+.cover-desc b{color:#fff}
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px}
+.pillar{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px 18px;cursor:pointer;transition:transform .2s,border-color .2s,background .2s}
+.pillar:hover{transform:translateY(-3px);border-color:var(--mint);background:rgba(100,194,149,.08)}
+.pillar .pv{font-size:28px;font-weight:900;letter-spacing:-.5px}
+.pillar .pl{font-size:12px;color:#AEB8CF;font-weight:600;margin-top:4px}
+.cover-hint{margin-top:26px;font-size:12.5px;color:#8F9AB5}
+.qr-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:24px;text-align:center;backdrop-filter:blur(10px);box-shadow:0 20px 50px rgba(0,0,0,.35);cursor:pointer;transition:transform .2s,border-color .2s,background .2s}
+.qr-card:hover{transform:translateY(-3px);border-color:var(--mint);background:rgba(255,255,255,.08)}
+.qr-card h3{margin:0 0 16px;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.qr-box{width:220px;height:220px;margin:0 auto;background:#fff;border-radius:16px;padding:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.qr-box img,.qr-box canvas{width:190px!important;height:190px!important}
+.qr-empty{color:var(--navy);font-size:13px;font-weight:700;line-height:1.45}
+.swipe-hint{display:none}
+
+/* ---------- Funil ---------- */
+.funnel{display:flex;flex-direction:column;gap:12px;justify-content:center;height:100%}
+.fstage{display:grid;grid-template-columns:170px 1fr;align-items:center;gap:18px;cursor:pointer;border-radius:12px;padding:6px 8px;transition:background .2s}
+.fstage:hover{background:#EEF1F6}
+.fstage.sel{background:#E9EEF7}
+.fl .fx{font-size:18px;font-weight:800;color:var(--navy)}
+.fl .rg{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.8px}
+.ftrack{display:flex;justify-content:center}
+.fbar{height:78px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;color:#fff;min-width:250px;box-shadow:0 6px 16px rgba(0,0,0,.08);transform-origin:center;transition:transform .9s cubic-bezier(.2,.8,.2,1),box-shadow .2s,outline .2s}
+.slide:not(.in) .fbar{transform:scaleX(0)}
+.fstage.sel .fbar{outline:3px solid var(--navy);outline-offset:3px}
+.fbar .fv{font-size:26px;font-weight:900;letter-spacing:-.5px}
+.fbar .fq{font-size:14px;font-weight:700;opacity:.95;text-align:right}
+.drawer h4{margin:0;font-size:24px;font-weight:900;color:var(--navy)}
+.brow{margin:12px 0}
+.brow .bt{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+.brow .bt b{color:var(--navy)}
+.btrack{height:12px;background:#EEF1F6;border-radius:6px;overflow:hidden}
+.btrack div{height:100%;border-radius:6px;transition:width .6s ease}
+
+/* ---------- Tabela ---------- */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.toolbar input.tx{flex:1;min-width:220px}
+.toolbar select.tx{width:auto;min-width:150px}
+.tablewrap{flex:1;min-height:0;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table.dt{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px}
+.dt th{position:sticky;top:0;background:var(--navy);color:#fff;text-align:left;font-size:11.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:11px 12px;cursor:pointer;white-space:nowrap;z-index:2;user-select:none}
+.dt th.r,.dt td.r{text-align:right}
+.dt th.c,.dt td.c{text-align:center}
+.dt th .ar{opacity:.45;margin-left:4px}
+.dt th.sorted .ar{opacity:1;color:var(--mint)}
+.dt td{padding:10px 12px;border-bottom:1px solid #EEF1F6;vertical-align:middle}
+.dt tbody tr{cursor:pointer;transition:background .15s}
+.dt tbody tr:hover{background:#F2F6FB}
+.dt .mod{font-weight:700;color:var(--navy);max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dt .sm{font-size:11.5px;color:var(--mut2)}
+.dt .pl{font-family:ui-monospace,Consolas,monospace;font-weight:700;letter-spacing:.5px}
+.dt tfoot td{position:sticky;bottom:0;background:#F4F6F9;font-weight:800;color:var(--navy);border-top:2px solid var(--line)}
+.empty{padding:40px;text-align:center;color:var(--mut2);font-weight:600}
+
+/* ---------- Plano ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.step{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;border-top:5px solid var(--c)}
+.step:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(16,24,40,.08)}
+.step.sel{border-color:var(--c);box-shadow:0 0 0 2px var(--c)}
+.step .when{display:inline-block;font-size:13px;font-weight:900;color:#fff;background:var(--c);padding:4px 10px;border-radius:7px}
+.step h4{margin:12px 0 8px;font-size:18px;font-weight:800;color:var(--navy);line-height:1.25}
+.step p{margin:0 0 14px;font-size:13.5px;color:var(--mut);line-height:1.5;min-height:60px}
+.step .meta{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px;font-size:12.5px;color:var(--mut)}
+.step .meta b{display:block;font-size:22px;color:var(--navy);font-weight:900}
+.step .resp{font-size:12px;color:var(--mut2);margin-top:10px}
+.step:not(:last-child)::after{content:'›';position:absolute;right:-16px;top:50%;transform:translateY(-50%);font-size:30px;color:var(--mut2);font-weight:300}
+
+/* ---------- Decisões ---------- */
+.res{display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;transition:border-color .2s,background .2s}
+.res.ok{border-color:#9FD8BA;background:#F4FBF7}
+.res .n{width:36px;height:36px;border-radius:10px;background:var(--navy);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex:none}
+.res.ok .n{background:var(--g)}
+.res h5{margin:0 0 4px;font-size:16px;font-weight:800;color:var(--navy)}
+.res p{margin:0;font-size:13.5px;color:var(--mut);line-height:1.5}
+.res p input{width:110px;height:28px;border:1px solid var(--line);border-radius:6px;padding:0 8px;font-weight:700;color:var(--navy);font-size:13px}
+.apr{margin-left:auto;flex:none;border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 12px;font-size:12px;font-weight:800;color:var(--mut);cursor:pointer;white-space:nowrap}
+.res.ok .apr{background:var(--g);color:#fff;border-color:var(--g)}
+
+/* ---------- Tooltip e modais ---------- */
+#tip{position:fixed;z-index:200;pointer-events:none;background:rgba(18,14,51,.97);color:#fff;font-size:13px;line-height:1.5;padding:10px 13px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:300px;opacity:0;transition:opacity .12s;border:1px solid rgba(255,255,255,.1)}
+#tip.show{opacity:1}
+#tip b{color:var(--mintL)}
+.ov{position:fixed;inset:0;background:rgba(9,7,27,.6);backdrop-filter:blur(4px);z-index:150;display:none;align-items:center;justify-content:center;padding:20px}
+.ov.show{display:flex}
+.modal{background:#fff;border-radius:18px;width:min(720px,100%);max-height:90vh;overflow:auto;padding:26px 28px;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.modal .mh{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
+.modal h3{margin:0;font-size:22px;font-weight:900;color:var(--navy)}
+.x{border:0;background:#EEF1F6;width:34px;height:34px;border-radius:9px;font-size:16px;cursor:pointer;flex:none}
+.idx{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.idx button{text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;font-size:14px;font-weight:700;color:var(--navy);display:flex;gap:12px;align-items:center}
+.idx button:hover{border-color:var(--mint);background:#F4FBF7}
+.idx button span{font-size:12px;font-weight:900;color:#fff;background:var(--navy);border-radius:7px;padding:3px 8px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.kv div{background:#F4F6F9;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--mut2)}
+.kv div b{display:block;font-size:15px;color:var(--navy);margin-top:2px}
+.wf{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 14px}
+.wf td{padding:8px 4px;border-bottom:1px solid #EEF1F6}
+.wf td:last-child{text-align:right;font-weight:700}
+.wf tr.t td{border-top:2px solid var(--navy);font-weight:900;color:var(--navy);font-size:15px}
+.prem label{display:block;margin-bottom:12px}
+.prem .ill{font-size:11px;font-weight:800;color:#A4511A;background:#FDEBDD;padding:2px 7px;border-radius:5px;margin-left:6px}
+
+/* =====================================================================
+   VERSÃO MOBILE (≤ 820 px ou botão "Modo mobile" / link ?mobile=1)
+   ===================================================================== */
+body.mobile{overflow-y:auto;overflow-x:hidden;background:var(--bg)}
+body.mobile #viewport{position:static;display:block;overflow:visible;padding-top:55px}
+body.mobile #stage{width:100%;height:auto;transform:none!important;box-shadow:none}
+body.mobile .slide{position:relative;inset:auto;opacity:1;visibility:visible;height:auto;overflow:visible;padding:26px 16px 18px;border-bottom:10px solid #E3E8F0}
+body.mobile .sh{gap:12px;margin-bottom:16px}
+body.mobile .hlogo{height:26px}
+body.mobile .title{font-size:23px}
+body.mobile .insight{font-size:14.5px}
+body.mobile .sb{flex-direction:column;gap:14px}
+body.mobile .col{gap:14px}
+body.mobile .grid4{grid-template-columns:1fr 1fr;gap:12px}
+body.mobile .kpi .val{font-size:30px}
+body.mobile .kpi .val small{font-size:13px}
+body.mobile .card{padding:16px}
+body.mobile .sf{flex-direction:column;align-items:flex-start;gap:6px}
+body.mobile .slide.cover{padding:36px 20px 30px;min-height:calc(100vh - 55px)}
+body.mobile .cover-grid{grid-template-columns:1fr;gap:20px}
+body.mobile .cover-stripe,body.mobile .qr-col{display:none}
+body.mobile .cover-brand img{height:46px}
+body.mobile .cover h1{font-size:34px;letter-spacing:-.8px}
+body.mobile .cover-desc{font-size:15px}
+body.mobile .pillars{grid-template-columns:1fr 1fr}
+body.mobile .pillar .pv{font-size:21px}
+body.mobile .swipe-hint{display:block;margin-top:20px;font-size:13px;color:var(--mintL);font-weight:700}
+body.mobile .fstage{grid-template-columns:1fr;gap:6px}
+body.mobile .fbar{height:58px;min-width:0;padding:0 12px}
+body.mobile .fbar .fv{font-size:18px}
+body.mobile .fbar .fq{font-size:12px}
+body.mobile .steps{grid-template-columns:1fr}
+body.mobile .step::after{display:none}
+body.mobile .step p{min-height:0}
+body.mobile .tablewrap{max-height:none;overflow:visible;border:0;background:transparent}
+body.mobile table.dt thead,body.mobile table.dt tfoot{display:none}
+body.mobile table.dt,body.mobile .dt tbody{display:block}
+body.mobile .dt tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+body.mobile .dt td{border:0;padding:2px 0;text-align:left!important}
+body.mobile .dt td::before{content:attr(data-l);display:block;font-size:10.5px;font-weight:700;color:var(--mut2);text-transform:uppercase;letter-spacing:.5px}
+body.mobile .dt td.wide{grid-column:1/-1}
+body.mobile .dt .mod{white-space:normal;max-width:none}
+body.mobile .toolbar select.tx{flex:1 1 45%;min-width:0}
+body.mobile .tb-title,body.mobile .counter,body.mobile .hide-m{display:none}
+body.mobile .scen{grid-template-columns:1fr!important}
+body.mobile .res{flex-wrap:wrap}
+body.mobile .apr{margin-left:52px}
+body.mobile .idx{grid-template-columns:1fr}
+body.mobile .twoc{grid-template-columns:1fr!important}
+body.mobile .stackm{flex-direction:column!important}
+@media (max-width:520px){ .tbtn .lbl{display:none} }
+@media print{ body{overflow:visible} }
+</style>
+</head>
+<body>
+
+<div id="tip"></div>
+
+<header class="topbar">
+  <div class="tb-left">
+    <span class="tb-title"><b>Estoque SN</b> · Giro, margem e capital parado · posição 05/11/2026</span>
+  </div>
+  <div class="tb-right">
+    <button class="tbtn" id="bPrev" onclick="prev()" title="Anterior (←)">‹</button>
+    <span class="counter" id="counter">1 / 10</span>
+    <button class="tbtn" id="bNext" onclick="next()" title="Próximo (→)">›</button>
+    <button class="tbtn" onclick="openModal('mIndex')" title="Índice (I)">☰ <span class="lbl">Índice</span></button>
+    <button class="tbtn" onclick="openPremissas()" title="Premissas (P)">⚙ <span class="lbl">Premissas</span></button>
+    <button class="tbtn" id="bMobile" onclick="toggleMobile()" title="Alternar versão mobile (M)">📱 <span class="lbl">Mobile</span></button>
+    <button class="tbtn hide-m" onclick="toggleFS()" title="Tela cheia (F)">⛶ <span class="lbl">Tela cheia</span></button>
+  </div>
+</header>
+<div class="progress" id="progress"></div>
+
+<main id="viewport"><div id="stage">
+
+<!-- =============================== 1. CAPA =============================== -->
+<section class="slide cover active" data-title="Capa">
+  <div class="cover-mesh"></div><div class="cover-orb"></div><div class="cover-orb2"></div><div class="cover-stripe"></div>
+  <div class="cover-grid">
+    <div>
+      <div class="cover-brand anim">
+        <img src="__LOGO_WHITE__" alt="CAOA Seminovos">
+        <div class="div"></div>
+        <span>Comitê Executivo</span>
+      </div>
+      <div class="cover-tag anim" style="--d:.08s"><i></i>Estoque de seminovos · posição 05/11/2026</div>
+      <h1 class="anim" style="--d:.14s">Giro de estoque e custo do dinheiro: <span>plano de saída dos &gt;90 dias</span></h1>
+      <p class="cover-desc anim" style="--d:.2s">Giro rápido libera caixa e reduz o custo do dinheiro parado (CDI). Vender para revendedor sacrifica margem unitária, mas a <b>margem econômica por chassi</b> pode ser melhor do que carregar o carro.</p>
+      <div class="pillars anim" style="--d:.28s">
+        <div class="pillar" onclick="go(1)"><div class="pv" id="cvVeic">—</div><div class="pl">veículos em estoque</div></div>
+        <div class="pillar" onclick="go(2)"><div class="pv" id="cvCap">—</div><div class="pl">capital (valor de compra)</div></div>
+        <div class="pillar" onclick="go(4)"><div class="pv" style="color:#FF8A8A" id="cvCrit">—</div><div class="pl">carros acima de 90 dias</div></div>
+        <div class="pillar" onclick="go(7)"><div class="pv" style="color:var(--mintL)" id="cvCritCap">—</div><div class="pl">capital acima de 90 dias</div></div>
+      </div>
+      <div class="cover-hint anim hide-m" style="--d:.36s">Navegue com ← → · clique nos cartões para ir direto ao tema · <b>I</b> abre o índice</div>
+      <div class="swipe-hint">↓ Role para ver todos os slides</div>
+    </div>
+    <div class="qr-col anim" style="--d:.3s">
+      <div class="qr-card" onclick="toggleMobile()" title="Clique para ver no formato mobile">
+        <h3>Acompanhe pelo celular</h3>
+        <div class="qr-box" id="qrBox"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================== 2. SÍNTESE =============================== -->
+<section class="slide" data-title="Síntese">
+  <div class="sh">
+    <div><div class="tag"><i></i>01 · Síntese</div>
+      <h2 class="title" id="s2title">—</h2>
+      <div class="insight">Estoque saudável na maior parte; o problema está concentrado e é <b>tratável chassi a chassi</b>.</div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div class="col" style="flex:1;min-height:0">
+    <div class="grid4">
+      <div class="card kpi anim" style="--d:.05s"><div class="lbl">Veículos</div><div class="val" data-count="veic">0</div><div class="sub">estoque total em 05/11</div></div>
+      <div class="card kpi anim" style="--d:.1s;border-top-color:var(--mint2)"><div class="lbl">Capital</div><div class="val"><span data-count="capMM">0</span> <small>R$ MM</small></div><div class="sub">valor de compra</div></div>
+      <div class="card kpi anim" style="--d:.15s;border-top-color:var(--y)"><div class="lbl">Aging médio</div><div class="val"><span data-count="aging">0</span> <small>dias</small></div><div class="sub">ponderado pelo capital</div></div>
+      <div class="card kpi anim" style="--d:.2s;border-top-color:var(--w)"><div class="lbl">CDI estimado &gt;90 dias</div><div class="val"><span data-count="cdiMil">0</span> <small>R$ mil</small></div><div class="sub" id="s2cdiSub">—</div></div>
+    </div>
+    <div class="sb">
+      <div class="card anim" style="--d:.25s;flex:1.5">
+        <h3>Onde está o capital, pela régua de aging</h3>
+        <p class="hint">Passe o mouse para ver os valores · clique para abrir a faixa no funil</p>
+        <div id="s2bar" style="display:flex;height:64px;border-radius:12px;overflow:hidden;gap:3px"></div>
+        <div id="s2legend" style="display:flex;justify-content:space-between;margin-top:12px;gap:8px;flex-wrap:wrap"></div>
+        <div class="callout" style="margin-top:20px" id="s2callout"></div>
+      </div>
+      <div class="card anim" style="--d:.3s;flex:1">
+        <h3>Capital por marca</h3>
+        <p class="hint">Estoque total · posição 05/11</p>
+        <div id="s2brands"></div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><span>Bases com recortes distintos: o PPT do Financeiro (28/10) considera <b id="s2ppt">—</b>; esta base (05/11) considera o estoque total da planilha. CDI estimado = <code>valor de compra × dias × taxa diária</code>, somado chassi a chassi.</span><span class="pg"></span></div>
+</section>
+
+<!-- =============================== 3. FUNIL =============================== -->
+<section class="slide" data-title="Funil de aging">
+  <div class="sh">
+    <div><div class="tag"><i></i>02 · Funil de aging</div>
+      <h2 class="title">Metade do capital está em até 30 dias; o funil afina, mas não fecha</h2>
+      <div class="insight">Largura proporcional ao capital. <b>Clique numa faixa</b> para ver o detalhe por marca.</div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div class="sb">
+    <div class="card" style="flex:1.7"><div class="funnel" id="funnel"></div></div>
+    <div class="card drawer anim" style="flex:1;--d:.2s" id="drawer"></div>
+  </div>
+  <div class="sf"><span>Régua de decisão do Financeiro (28/10): 0–30 Normal · 31–45 Atenção · 46–60 Ação comercial · 61–90 Prioridade · &gt;90 Crítico. % do capital = <code>capital da faixa ÷ capital total</code>.</span><span class="pg"></span></div>
+</section>
+
+<!-- =============================== 4. CDI =============================== -->
+<section class="slide" data-title="Valor do dinheiro parado">
+  <div class="sh">
+    <div><div class="tag"><i></i>03 · Valor do dinheiro parado</div>
+      <h2 class="title" id="s4title">—</h2>
+      <div class="insight">O custo cresce todo dia, sem aparecer na margem bruta. <b>Clique numa barra</b> para levá-la à calculadora.</div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div class="sb">
+    <div class="card anim" style="flex:1.35;display:flex;flex-direction:column">
+      <h3>CDI acumulado de um carro de R$ 100 mil</h3>
+      <p class="hint">Custo do dinheiro parado por dias em estoque</p>
+      <div id="s4chart" style="flex:1;min-height:0"></div>
+    </div>
+    <div class="card anim" style="flex:1;--d:.15s">
+      <h3>Calculadora do custo parado</h3>
+      <p class="hint">Altere os valores — a taxa é ajustável e vale para toda a apresentação</p>
+      <div class="inrow"><label class="f">Valor do carro (R$)</label><input class="tx num" id="cVal" type="number" min="0" step="1000" value="100000"></div>
+      <div class="inrow"><div class="top"><label class="f">Dias parado</label><b id="cDiasV">90 dias</b></div><input type="range" id="cDias" min="1" max="240" value="90"></div>
+      <div class="inrow"><label class="f">Taxa CDI (% ao dia)</label><input class="tx num" id="cTaxa" type="number" min="0" step="0.0001"></div>
+      <div style="background:var(--navy);color:#fff;border-radius:14px;padding:18px 20px;margin-top:6px">
+        <div style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#AEB8CF;font-weight:700">Custo do dinheiro parado</div>
+        <div style="font-size:46px;font-weight:900;letter-spacing:-1px;margin:4px 0" id="cRes">—</div>
+        <div style="display:flex;justify-content:space-between;font-size:13.5px;color:#C5CEE0"><span id="cDia">—</span><span id="cPct">—</span></div>
+      </div>
+      <div class="callout warn" style="margin-top:14px;font-size:13.5px" id="s4crit"></div>
+    </div>
+  </div>
+  <div class="sf"><span>Premissa: CDI ≈ <b id="s4taxa">—</b> ao dia, derivada do PPT do Financeiro (R$ 102.000 × 117 dias = R$ 4.361). Fórmula: <code>custo = valor × dias × taxa diária</code> (juros simples, como no PPT).</span><span class="pg"></span></div>
+</section>
+
+<!-- =============================== 5. ONDE ESTÁ O PROBLEMA =============================== -->
+<section class="slide" data-title="Onde está o problema">
+  <div class="sh">
+    <div><div class="tag"><i></i>04 · Onde está o problema</div>
+      <h2 class="title" id="s5title">—</h2>
+      <div class="insight">Marcas pedem ações diferentes: <b>volume</b> pede liberação de capital; <b>aging</b> pede ação comercial imediata.</div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div class="sb">
+    <div class="card anim" style="flex:1.5;display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div><h3>Carros &gt;90 dias por marca e faixa</h3><p class="hint">Clique numa marca para abrir os chassis na tabela</p></div>
+        <div class="seg" id="s5seg"><button class="on" data-m="q">Quantidade</button><button data-m="v">Capital</button></div>
+      </div>
+      <div id="s5chart" style="flex:1;min-height:0"></div>
+      <div id="s5legend" style="display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--mut);font-weight:600"></div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card anim" style="--d:.1s"><h3>Destaques</h3><div id="s5calls" style="display:flex;flex-direction:column;gap:10px;margin-top:10px"></div></div>
+      <div class="card anim" style="--d:.2s;flex:1"><h3>Por tipo de estoque</h3><p class="hint">Carros &gt;90 dias</p><div id="s5tipos"></div></div>
+    </div>
+  </div>
+  <div class="sf"><span>Margem bruta sobre preço público: &gt;90 dias <b id="s5mb1">—</b> · até 90 dias <b id="s5mb2">—</b>. Valor de compra dos &gt;90 dias em média <b id="s5fipe">—</b> vs. FIPE atual. Aging médio = média simples dos chassis da marca.</span><span class="pg"></span></div>
+</section>
+
+<!-- =============================== 6. DEFESA DA MARGEM =============================== -->
+<section class="slide" data-title="A defesa da margem">
+  <div class="sh">
+    <div><div class="tag"><i></i>05 · A defesa da margem</div>
+      <h2 class="title">Vender agora × manter: o desconto vale a pena quando custa menos que a espera</h2>
+      <div class="insight">Margem econômica = <b>preço − compra − CDI − despesas</b>. Ajuste os controles e veja o ponto de equilíbrio.</div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div class="sb">
+    <div class="card anim" style="flex:.95;overflow:auto">
+      <div class="inrow"><label class="f">Carro analisado</label><select class="tx" id="mCar"></select></div>
+      <div class="twoc" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="inrow"><label class="f">Valor de compra</label><input class="tx num" type="number" id="mCompra" step="500"></div>
+        <div class="inrow"><label class="f">Preço de varejo</label><input class="tx num" type="number" id="mPreco" step="500"></div>
+      </div>
+      <div class="inrow"><div class="top"><label class="f">Dias já em estoque</label><b id="mAgingV">—</b></div><input type="range" id="mAging" min="0" max="240"></div>
+      <div class="inrow">
+        <div class="top"><label class="f">Desconto para revendedor <span class="seg" id="mUnit" style="margin-left:6px;vertical-align:middle"><button class="on" data-u="p">%</button><button data-u="r">R$</button></span></label><b id="mDescV">—</b></div>
+        <input type="range" id="mDesc" min="0" max="15" step="0.5">
+      </div>
+      <div class="inrow"><div class="top"><label class="f">Dias para vender no revendedor</label><b id="mDrV">—</b></div><input type="range" id="mDr" min="1" max="30"></div>
+      <div class="inrow"><div class="top"><label class="f">Dias adicionais para vender no varejo</label><b id="mDvV">—</b></div><input type="range" id="mDv" min="0" max="180" step="5"></div>
+    </div>
+    <div class="col" style="flex:1.6">
+      <div class="scen anim" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;--d:.1s">
+        <div class="card" id="scR" style="border-top:5px solid var(--o)"></div>
+        <div class="card" id="scV" style="border-top:5px solid var(--blue)"></div>
+      </div>
+      <div class="card anim" style="flex:1;display:flex;flex-direction:column;--d:.2s;min-height:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h3>Margem econômica conforme a espera no varejo</h3><span class="chip" id="mVerdict">—</span></div>
+        <div id="mChart" style="flex:1;min-height:0"></div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><span>Ponto de equilíbrio (dias adicionais no varejo) = <code>(desconto R$ + despesa revendedor − despesa varejo) ÷ (compra × taxa diária) + dias no revendedor</code>. Despesas são premissas <b>ilustrativas</b> (⚙ Premissas). Não inclui desvalorização FIPE nem risco comercial, que favorecem a venda rápida.</span><span class="pg"></span></div>
+</section>
+
+<!-- =============================== 7. PLANO =============================== -->
+<section class="slide" data-title="Plano de reprecificação">
+  <div class="sh">
+    <div><div class="tag"><i></i>06 · Plano de ação</div>
+      <h2 class="title">Régua de reprecificação em 4 degraus, com meta em capital liberado</h2>
+      <div class="insight">Cada chassi entra no degrau indicado pela regra da tabela e avança se não vender. <b>Clique num degrau</b> para ver os carros.</div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div class="col" style="flex:1;min-height:0">
+    <div class="steps anim" id="steps"></div>
+    <div class="card anim" style="--d:.15s">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap"><h3>Capital &gt;90 dias por degrau de entrada</h3><span style="font-size:13px;color:var(--mut)" id="stTotal"></span></div>
+      <div id="stBar" style="display:flex;height:34px;border-radius:9px;overflow:hidden;gap:3px;margin-top:10px"></div>
+    </div>
+    <div class="card anim" style="flex:1;min-height:0;display:flex;flex-direction:column;--d:.25s">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h3 id="stListT">—</h3><button class="btn ghost" id="stOpen">Abrir na tabela →</button></div>
+      <div id="stList" style="flex:1;min-height:0;overflow:auto;margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:start"></div>
+    </div>
+  </div>
+  <div class="sf"><span>Regra de entrada: classe D/E e &gt;120 d → revendedor/leilão; classe A/B e ≤120 d → reprecificar −2% a −4%. Complementares (sugestão): C/D/E ≤120 d → campanha; A/B/C &gt;120 d → oferta a revendedor. Responsáveis sugeridos, a confirmar.</span><span class="pg"></span></div>
+</section>
+
+<!-- =============================== 8. TABELA =============================== -->
+<section class="slide" data-title="Chassis críticos">
+  <div class="sh">
+    <div><div class="tag"><i></i>07 · Lista de chassis críticos</div>
+      <h2 class="title" id="tTitle">—</h2>
+      <div class="insight">Filtre, ordene (clique no cabeçalho) e <b>clique numa linha</b> para ver a conta do chassi.</div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column">
+    <div class="toolbar">
+      <input class="tx" id="fBusca" placeholder="🔍 Buscar modelo ou placa…">
+      <select class="tx" id="fMarca"></select>
+      <select class="tx" id="fLoja"></select>
+      <select class="tx" id="fTipo"></select>
+      <select class="tx" id="fFaixa"></select>
+      <select class="tx" id="fAcao"></select>
+      <button class="btn ghost" onclick="limparFiltros()">Limpar</button>
+    </div>
+    <div class="tablewrap">
+      <table class="dt">
+        <thead><tr id="tHead"></tr></thead>
+        <tbody id="tBody"></tbody>
+        <tfoot><tr id="tFoot"></tr></tfoot>
+      </table>
+    </div>
+  </div>
+  <div class="sf"><span>CDI estimado = <code>valor de compra × dias × taxa diária</code>. % vs FIPE e Classe da mesa conforme planilha. Ação sugerida pela regra do slide anterior.</span><span class="pg"></span></div>
+</section>
+
+<!-- =============================== 9. RESULTADOS =============================== -->
+<section class="slide" data-title="Resultados desde 28/10">
+  <div class="sh">
+    <div><div class="tag"><i></i>08 · Resultados desde 28/10</div>
+      <h2 class="title">Antes × agora: o placar que vamos acompanhar toda semana</h2>
+      <div class="insight">Os campos em branco são editáveis e ficam salvos neste navegador. <b>Preencha com a lista de placas de 28/10.</b></div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div class="sb">
+    <div class="card anim" style="flex:1">
+      <h3>Placar</h3><p class="hint">Carros acima de 90 dias</p>
+      <table class="wf" id="rTable" style="font-size:15px"></table>
+      <div class="callout warn" style="font-size:13.5px">O PPT de 28/10 traz exemplos de chassis, mas não a lista completa acima de 90 dias. Sem ela não é possível calcular as saídas com segurança — por isso os campos estão em aberto.</div>
+    </div>
+    <div class="card anim" style="flex:1.2;display:flex;flex-direction:column;--d:.15s">
+      <h3>Evolução</h3><p class="hint" id="rHint">Preencha os campos para gerar o comparativo</p>
+      <div id="rChart" style="flex:1;min-height:0"></div>
+      <div class="kv" style="margin:12px 0 0;grid-template-columns:repeat(3,1fr)" id="rKpis"></div>
+    </div>
+  </div>
+  <div class="sf"><span>Variação = <code>agora − 28/10</code>. Capital liberado = soma do valor de compra dos chassis vendidos/baixados no período. Referência do PPT (outro recorte): <span id="rRef"></span>.</span><span class="pg"></span></div>
+</section>
+
+<!-- =============================== 10. DECISÃO =============================== -->
+<section class="slide" data-title="Pedido de decisão">
+  <div class="sh">
+    <div><div class="tag"><i></i>09 · Pedido de decisão</div>
+      <h2 class="title">Cinco decisões para transformar estoque em caixa</h2>
+      <div class="insight">Marque o que foi aprovado na reunião — fica registrado neste navegador.</div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div class="sb stackm" style="flex-direction:row">
+    <div class="col" style="flex:1.6;gap:12px" id="resList"></div>
+    <div class="card anim" style="flex:1;background:linear-gradient(150deg,#1D184B,#120E33);color:#fff;border:0;display:flex;flex-direction:column;justify-content:space-between;--d:.3s">
+      <div>
+        <div class="tag" style="color:var(--mintL)"><i></i>Resultado esperado</div>
+        <div style="font-size:40px;font-weight:900;line-height:1.12;letter-spacing:-1px;margin:18px 0">Mais caixa, menor aging, melhor retorno sobre capital.</div>
+        <div style="font-size:14.5px;color:#C5CEE0;line-height:1.55" id="dSum"></div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;color:var(--mintL);margin-bottom:8px" id="dCount">—</div>
+        <div style="height:8px;background:rgba(255,255,255,.12);border-radius:5px;overflow:hidden"><div id="dBar" style="height:100%;background:var(--mint);width:0;transition:width .4s"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="sf"><span>Meta semanal sugerida = <code>capital &gt;90 dias ÷ semanas do plano</code>. Alçada: desconto máximo = CDI dos dias que o carro ainda ficaria parado ± diferença de despesas (slide 6).</span><span class="pg"></span></div>
+</section>
+
+</div></main>
+
+<!-- Modais -->
+<div class="ov" id="mIndex" onclick="if(event.target===this)closeModal(this.id)">
+  <div class="modal"><div class="mh"><h3>Índice</h3><button class="x" onclick="closeModal('mIndex')">✕</button></div><div class="idx" id="idxList"></div></div>
+</div>
+<div class="ov" id="mCarro" onclick="if(event.target===this)closeModal(this.id)">
+  <div class="modal"><div class="mh"><div><div class="tag" id="mcTag"></div><h3 id="mcTitle"></h3></div><button class="x" onclick="closeModal('mCarro')">✕</button></div><div id="mcBody"></div></div>
+</div>
+<div class="ov" id="mPrem" onclick="if(event.target===this)closeModal(this.id)">
+  <div class="modal prem"><div class="mh"><div><div class="tag"><i></i>Premissas</div><h3>Premissas e fórmulas</h3></div><button class="x" onclick="closeModal('mPrem')">✕</button></div>
+    <div class="twoc" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <label><span class="f">Taxa CDI (% ao dia)</span><input class="tx num" type="number" step="0.0001" id="pTaxa"></label>
+      <label><span class="f">Semanas do plano</span><input class="tx num" type="number" step="1" min="1" id="pSem"></label>
+      <label><span class="f">Despesa média de saída — varejo (R$) <span class="ill">ILUSTRATIVO</span></span><input class="tx num" type="number" step="100" id="pDv"></label>
+      <label><span class="f">Despesa média de saída — revendedor (R$) <span class="ill">ILUSTRATIVO</span></span><input class="tx num" type="number" step="100" id="pDr"></label>
+    </div>
+    <div class="callout" style="font-size:13px;margin-top:6px;line-height:1.6">
+      <b>Taxa CDI:</b> 0,0366% a.d. derivada do PPT (R$ 4.361 ÷ (R$ 102.000 × 117 d)). <br>
+      <b>CDI por chassi:</b> valor de compra × dias em estoque × taxa diária. <br>
+      <b>Margem econômica:</b> preço provável de venda − valor contábil − CDI acumulado − despesas/desconto. <br>
+      <b>Bases:</b> PPT 28/10 = 1.333 veículos “Liberado” (R$ 110,4 MM; CDI R$ 1,48 MM = 1,34%; aging 34,4 d). Base 05/11 = estoque total da planilha. Recortes distintos.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn ghost" onclick="resetPremissas()">Restaurar padrão</button><button class="btn" onclick="salvarPremissas()">Aplicar</button></div>
+  </div>
+</div>
+
+<script>
+/* qrcode.js (MIT) — mesma biblioteca do projeto app pai */
+__QRLIB__
+</script>
+<script src="__APP_JS__"></script>
+</body>
+</html>
+
