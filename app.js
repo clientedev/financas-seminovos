@@ -213,7 +213,17 @@ function toggleMobile() {
   document.body.classList.toggle('mobile', isMobile);
   const bMobile = document.getElementById('bMobile');
   if (bMobile) bMobile.classList.toggle('on', isMobile);
-  setupScaling();
+
+  if (isMobile) {
+    // No modo mobile, garante que todos os contadores dos slides recebam seus valores reais imediatamente
+    slides.forEach(s => {
+      s.classList.add('in');
+      triggerCounters(s);
+    });
+  } else {
+    setupScaling();
+    updateUI();
+  }
 }
 
 function toggleFS() {

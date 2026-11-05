@@ -227,49 +227,80 @@ table.dt{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px}
    VERSÃO MOBILE (≤ 820 px ou botão "Modo mobile" / link ?mobile=1)
    ===================================================================== */
 body.mobile{overflow-y:auto;overflow-x:hidden;background:var(--bg)}
-body.mobile #viewport{position:static;display:block;overflow:visible;padding-top:55px}
+body.mobile #viewport{position:static;display:block;overflow:visible;padding-top:52px}
 body.mobile #stage{width:100%;height:auto;transform:none!important;box-shadow:none}
-body.mobile .slide{position:relative;inset:auto;opacity:1;visibility:visible;height:auto;overflow:visible;padding:26px 16px 18px;border-bottom:10px solid #E3E8F0}
-body.mobile .sh{gap:12px;margin-bottom:16px}
-body.mobile .hlogo{height:26px}
-body.mobile .title{font-size:23px}
-body.mobile .insight{font-size:14.5px}
+body.mobile .slide{position:relative;inset:auto;opacity:1!important;visibility:visible!important;height:auto;overflow:visible;padding:26px 16px 20px;border-bottom:12px solid #E3E8F0}
+body.mobile .slide .anim{opacity:1!important;transform:none!important;transition:none!important}
+body.mobile .slide .growx{transform:scaleX(1)!important}
+body.mobile .slide .growy{transform:scaleY(1)!important}
+body.mobile .sh{gap:12px;margin-bottom:16px;flex-direction:column;align-items:flex-start}
+body.mobile .hlogo{height:28px;margin-top:0}
+body.mobile .title{font-size:22px;letter-spacing:-.4px}
+body.mobile .insight{font-size:14.5px;line-height:1.45}
 body.mobile .sb{flex-direction:column;gap:14px}
 body.mobile .col{gap:14px}
-body.mobile .grid4{grid-template-columns:1fr 1fr;gap:12px}
-body.mobile .kpi .val{font-size:30px}
+body.mobile .grid4{grid-template-columns:1fr 1fr;gap:10px}
+body.mobile .kpi{padding:14px}
+body.mobile .kpi .val{font-size:28px}
 body.mobile .kpi .val small{font-size:13px}
-body.mobile .card{padding:16px}
-body.mobile .sf{flex-direction:column;align-items:flex-start;gap:6px}
-body.mobile .slide.cover{padding:36px 20px 30px;min-height:calc(100vh - 55px)}
+body.mobile .card{padding:16px;border-radius:14px}
+body.mobile .sf{flex-direction:column;align-items:flex-start;gap:6px;font-size:11px}
+body.mobile .slide.cover{padding:36px 18px 30px;min-height:calc(100vh - 52px)}
 body.mobile .cover-grid{grid-template-columns:1fr;gap:20px}
 body.mobile .cover-stripe,body.mobile .qr-col{display:none}
-body.mobile .cover-brand img{height:46px}
-body.mobile .cover h1{font-size:34px;letter-spacing:-.8px}
-body.mobile .cover-desc{font-size:15px}
-body.mobile .pillars{grid-template-columns:1fr 1fr}
-body.mobile .pillar .pv{font-size:21px}
+body.mobile .cover-brand{gap:14px;margin-bottom:20px}
+body.mobile .cover-brand img{height:44px}
+body.mobile .cover-tag{font-size:11.5px;padding:5px 12px;margin-bottom:16px}
+body.mobile .cover h1{font-size:32px;letter-spacing:-.8px;line-height:1.15;margin-bottom:16px}
+body.mobile .cover-desc{font-size:15px;line-height:1.5;margin-bottom:24px}
+body.mobile .pillars{grid-template-columns:1fr 1fr;gap:10px}
+body.mobile .pillar{padding:14px}
+body.mobile .pillar .pv{font-size:22px}
+body.mobile .pillar .pl{font-size:11px}
 body.mobile .swipe-hint{display:block;margin-top:20px;font-size:13px;color:var(--mintL);font-weight:700}
+
+/* Gráficos e SVGs no mobile */
+body.mobile #s4chart{height:230px!important;min-height:230px!important}
+body.mobile #s5chart{height:250px!important;min-height:250px!important}
+body.mobile #mChart{height:210px!important;min-height:210px!important}
+body.mobile #rChart{height:210px!important;min-height:210px!important}
+body.mobile #s2bar{height:50px!important}
+body.mobile #s2legend{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px 10px!important}
+
+/* Funil no mobile */
 body.mobile .fstage{grid-template-columns:1fr;gap:6px}
-body.mobile .fbar{height:58px;min-width:0;padding:0 12px}
-body.mobile .fbar .fv{font-size:18px}
-body.mobile .fbar .fq{font-size:12px}
-body.mobile .steps{grid-template-columns:1fr}
+body.mobile .fbar{height:54px;min-width:0;padding:0 12px}
+body.mobile .fbar .fv{font-size:17px}
+body.mobile .fbar .fq{font-size:11.5px}
+
+/* Plano e Degraus no mobile */
+body.mobile .steps{grid-template-columns:1fr;gap:12px}
 body.mobile .step::after{display:none}
 body.mobile .step p{min-height:0}
+body.mobile #stList{grid-template-columns:1fr!important}
+
+/* Tabela de chassis no mobile (modo cartão completo) */
 body.mobile .tablewrap{max-height:none;overflow:visible;border:0;background:transparent}
 body.mobile table.dt thead,body.mobile table.dt tfoot{display:none}
 body.mobile table.dt,body.mobile .dt tbody{display:block}
-body.mobile .dt tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+body.mobile .dt tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(16,24,40,.04)}
 body.mobile .dt td{border:0;padding:2px 0;text-align:left!important}
-body.mobile .dt td::before{content:attr(data-l);display:block;font-size:10.5px;font-weight:700;color:var(--mut2);text-transform:uppercase;letter-spacing:.5px}
+body.mobile .dt td::before{content:attr(data-l);display:block;font-size:10px;font-weight:800;color:var(--mut2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px}
 body.mobile .dt td.wide{grid-column:1/-1}
-body.mobile .dt .mod{white-space:normal;max-width:none}
-body.mobile .toolbar select.tx{flex:1 1 45%;min-width:0}
-body.mobile .tb-title,body.mobile .counter,body.mobile .hide-m{display:none}
-body.mobile .scen{grid-template-columns:1fr!important}
-body.mobile .res{flex-wrap:wrap}
-body.mobile .apr{margin-left:52px}
+body.mobile .dt .mod{white-space:normal;max-width:none;font-size:13.5px}
+body.mobile .toolbar{flex-direction:column;align-items:stretch}
+body.mobile .toolbar input.tx,body.mobile .toolbar select.tx{width:100%!important;min-width:0}
+
+/* Topbar e utilitários no mobile */
+body.mobile .topbar{padding:0 10px}
+body.mobile .tb-title{display:block;font-size:11.5px;max-width:140px}
+body.mobile .counter{font-size:11px;min-width:44px}
+body.mobile .tbtn{padding:0 8px;height:30px;font-size:11px}
+body.mobile .hide-m{display:none!important}
+body.mobile .scen{grid-template-columns:1fr!important;gap:12px}
+body.mobile .res{flex-direction:column;gap:10px}
+body.mobile .res .n{width:28px;height:28px;font-size:12px;border-radius:7px}
+body.mobile .apr{margin-left:0;width:100%;text-align:center}
 body.mobile .idx{grid-template-columns:1fr}
 body.mobile .twoc{grid-template-columns:1fr!important}
 body.mobile .stackm{flex-direction:column!important}
