@@ -1,17 +1,17 @@
 {
  "totalGeral": {
-  "veiculos": 1565,
-  "capital": 130167724.0,
-  "agingMedioPonderado": 37.1,
-  "agingMedioSimples": 34.4,
+  "veiculos": 1563,
+  "capital": 129992724.0,
+  "agingMedioPonderado": 36.5,
+  "agingMedioSimples": 33.7,
   "dataBase": "12/11/2026"
  },
  "marcasGeral": {
   "CHERY": {
-   "veiculos": 704,
-   "capital": 58541770.0,
+   "veiculos": 703,
+   "capital": 58476770.0,
    "capitalMM": 58.5,
-   "agingMedio": 38.7
+   "agingMedio": 37.1
   },
   "CHANGAN": {
    "veiculos": 458,
@@ -26,10 +26,10 @@
    "agingMedio": 32.3
   },
   "FORD": {
-   "veiculos": 71,
-   "capital": 7578810.0,
-   "capitalMM": 7.6,
-   "agingMedio": 35.5
+   "veiculos": 70,
+   "capital": 7468810.0,
+   "capitalMM": 7.5,
+   "agingMedio": 35.6
   }
  },
  "funilAging": [
@@ -42,7 +42,7 @@
    "veiculos": 882,
    "capital": 68473374.0,
    "capitalMM": 68.5,
-   "percentualCapital": 52.6,
+   "percentualCapital": 52.7,
    "agingMedio": 12.1,
    "marcas": {
     "CHERY": {
@@ -73,11 +73,11 @@
    "regua": "Atenção",
    "status": "Alinhar preço e preparar ação",
    "cor": "#E3B341",
-   "veiculos": 202,
-   "capital": 17984280.0,
-   "capitalMM": 18.0,
+   "veiculos": 201,
+   "capital": 17874280.0,
+   "capitalMM": 17.9,
    "percentualCapital": 13.8,
-   "agingMedio": 38.8,
+   "agingMedio": 38.9,
    "marcas": {
     "CHERY": {
      "qtd": 124,
@@ -95,9 +95,9 @@
      "aging": 39.3
     },
     "FORD": {
-     "qtd": 6,
-     "capitalMM": 0.58,
-     "aging": 38.5
+     "qtd": 5,
+     "capitalMM": 0.47,
+     "aging": 40.0
     }
    }
   },
@@ -175,16 +175,16 @@
    "regua": "Crítico",
    "status": "Decisão imediata chassi a chassi",
    "cor": "#841822",
-   "veiculos": 75,
-   "capital": 7774080.0,
-   "capitalMM": 7.8,
-   "percentualCapital": 6.0,
-   "agingMedio": 127.5,
+   "veiculos": 74,
+   "capital": 7709080.0,
+   "capitalMM": 7.7,
+   "percentualCapital": 5.9,
+   "agingMedio": 113.3,
    "marcas": {
     "CHERY": {
-     "qtd": 32,
-     "capitalMM": 3.35,
-     "aging": 142.3
+     "qtd": 31,
+     "capitalMM": 3.28,
+     "aging": 109.0
     },
     "CHANGAN": {
      "qtd": 25,
@@ -205,7 +205,7 @@
   }
  ],
  "indicadores": {
-  "margemBrutaAcima90": 7.9,
+  "margemBrutaAcima90": 7.8,
   "margemBrutaAte90": 11.6,
   "compraVsFipeCriticos": -14.2
  },
@@ -651,17 +651,6 @@
    "acima60": 6
   },
   {
-   "loja": "Ford-2050-Campinas",
-   "marca": "FORD",
-   "regional": "FORD",
-   "veiculos": 12,
-   "capital": 1164000.0,
-   "aging": 31.3,
-   "criticos": 1,
-   "capitalCritico": 112000.0,
-   "acima60": 1
-  },
-  {
    "loja": "HB-2958-Lauro Freitas",
    "marca": "HMB",
    "regional": "HY5",
@@ -715,6 +704,17 @@
    "criticos": 1,
    "capitalCritico": 145000.0,
    "acima60": 2
+  },
+  {
+   "loja": "Ford-2050-Campinas",
+   "marca": "FORD",
+   "regional": "FORD",
+   "veiculos": 11,
+   "capital": 1054000.0,
+   "aging": 31.3,
+   "criticos": 1,
+   "capitalCritico": 112000.0,
+   "acima60": 1
   },
   {
    "loja": "D21-9508-ASA NORTE DF",
@@ -827,17 +827,6 @@
    "acima60": 1
   },
   {
-   "loja": "D21-4034-CAMPINAS",
-   "marca": "CHERY",
-   "regional": "CY2",
-   "veiculos": 14,
-   "capital": 944600.0,
-   "aging": 106.5,
-   "criticos": 1,
-   "capitalCritico": 65000.0,
-   "acima60": 3
-  },
-  {
    "loja": "A21-1759-CAMPINAS",
    "marca": "CHANGAN",
    "regional": "A2",
@@ -880,6 +869,17 @@
    "criticos": 0,
    "capitalCritico": 0.0,
    "acima60": 1
+  },
+  {
+   "loja": "D21-4034-CAMPINAS",
+   "marca": "CHERY",
+   "regional": "CY2",
+   "veiculos": 13,
+   "capital": 879600.0,
+   "aging": 27.4,
+   "criticos": 0,
+   "capitalCritico": 0.0,
+   "acima60": 2
   },
   {
    "loja": "D21-7130-NILO PECANHA",
@@ -1723,12 +1723,12 @@
    "regional": "CY2",
    "marca": "CHERY",
    "lojas": 16,
-   "veiculos": 141,
-   "capital": 11914300.0,
-   "aging": 37.5,
-   "pct60": 12.0,
-   "criticos": 2,
-   "capitalCritico": 210000.0
+   "veiculos": 140,
+   "capital": 11849300.0,
+   "aging": 31.3,
+   "pct60": 11.6,
+   "criticos": 1,
+   "capitalCritico": 145000.0
   },
   {
    "regional": "A5",
@@ -1778,10 +1778,10 @@
    "regional": "FORD",
    "marca": "FORD",
    "lojas": 5,
-   "veiculos": 71,
-   "capital": 7578810.0,
-   "aging": 37.0,
-   "pct60": 19.8,
+   "veiculos": 70,
+   "capital": 7468810.0,
+   "aging": 37.1,
+   "pct60": 20.1,
    "criticos": 4,
    "capitalCritico": 512000.0
   },
@@ -1902,25 +1902,6 @@
  ],
  "veiculosCriticos": [
   {
-   "empresa": "D21-4034-CAMPINAS",
-   "modelo": "TIGGO2 1.5 AT LOOK VERMELHO",
-   "placa": "BTZ3E03",
-   "ano": "2021/2021",
-   "valorCompra": 65000.0,
-   "precoPublico": 73990.0,
-   "km": 37312,
-   "dias": 1176,
-   "tipoEstoque": "UT - VEICULO USADO DEMONST DE TERCEIROS",
-   "tipoSimples": "UT",
-   "bandeira": "CHERY",
-   "fipeAtual": 0.0,
-   "difFipe": 0.0,
-   "classifMesa": "-",
-   "regional": "CY2",
-   "acao": "Campanha e bônus",
-   "badge": "warn"
-  },
-  {
    "empresa": "HB-2958-Lauro Freitas",
    "modelo": "NEW CRETA 1.0L TGDI AT LIMITED SAFETY D115 01",
    "placa": "SJU5E17",
@@ -1936,25 +1917,6 @@
    "difFipe": -3.3,
    "classifMesa": "E",
    "regional": "HY5",
-   "acao": "Revendedor / Leilão",
-   "badge": "danger"
-  },
-  {
-   "empresa": "D21-5600-CASA FORTE",
-   "modelo": "COMPASS LONG TF",
-   "placa": "RZM5H81",
-   "ano": "2022/2022",
-   "valorCompra": 95000.0,
-   "precoPublico": 103490.0,
-   "km": 84387,
-   "dias": 168,
-   "tipoEstoque": "VUL - VEICULO USADO LEILAO",
-   "tipoSimples": "VUL",
-   "bandeira": "CHERY",
-   "fipeAtual": 112633.0,
-   "difFipe": 0.0,
-   "classifMesa": "E",
-   "regional": "CY5",
    "acao": "Revendedor / Leilão",
    "badge": "danger"
   },
@@ -1978,6 +1940,25 @@
    "badge": "danger"
   },
   {
+   "empresa": "D21-5600-CASA FORTE",
+   "modelo": "COMPASS LONG TF",
+   "placa": "RZM5H81",
+   "ano": "2022/2022",
+   "valorCompra": 95000.0,
+   "precoPublico": 103490.0,
+   "km": 84387,
+   "dias": 168,
+   "tipoEstoque": "VUL - VEICULO USADO LEILAO",
+   "tipoSimples": "VUL",
+   "bandeira": "CHERY",
+   "fipeAtual": 112633.0,
+   "difFipe": 0.0,
+   "classifMesa": "E",
+   "regional": "CY5",
+   "acao": "Revendedor / Leilão",
+   "badge": "danger"
+  },
+  {
    "empresa": "D21-1280-MUTIRAO",
    "modelo": "SENTRA 2.0 16V GASOLINA EXCLUSIVE PREMIUM",
    "placa": "SCZ5A09",
@@ -1997,25 +1978,6 @@
    "badge": "warn"
   },
   {
-   "empresa": "A21-6369-PARALELA",
-   "modelo": "RENEGADE SPT T270",
-   "placa": "SJS3E46",
-   "ano": "2023/2024",
-   "valorCompra": 82000.0,
-   "precoPublico": 88490.0,
-   "km": 76879,
-   "dias": 161,
-   "tipoEstoque": "VUL - VEICULO USADO LEILAO",
-   "tipoSimples": "VUL",
-   "bandeira": "CHANGAN",
-   "fipeAtual": 98326.0,
-   "difFipe": 0.0,
-   "classifMesa": "E",
-   "regional": "A5",
-   "acao": "Revendedor / Leilão",
-   "badge": "danger"
-  },
-  {
    "empresa": "A21-0949-IMBIRIBEIRA",
    "modelo": "JEEP COMPASS LIMITED 16V AUT",
    "placa": "SNK7C31",
@@ -2029,6 +1991,25 @@
    "bandeira": "CHANGAN",
    "fipeAtual": 128808.0,
    "difFipe": -8.3,
+   "classifMesa": "E",
+   "regional": "A5",
+   "acao": "Revendedor / Leilão",
+   "badge": "danger"
+  },
+  {
+   "empresa": "A21-6369-PARALELA",
+   "modelo": "RENEGADE SPT T270",
+   "placa": "SJS3E46",
+   "ano": "2023/2024",
+   "valorCompra": 82000.0,
+   "precoPublico": 88490.0,
+   "km": 76879,
+   "dias": 161,
+   "tipoEstoque": "VUL - VEICULO USADO LEILAO",
+   "tipoSimples": "VUL",
+   "bandeira": "CHANGAN",
+   "fipeAtual": 98326.0,
+   "difFipe": 0.0,
    "classifMesa": "E",
    "regional": "A5",
    "acao": "Revendedor / Leilão",

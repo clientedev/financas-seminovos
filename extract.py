@@ -4,7 +4,7 @@
 Uso:  python extract.py "<planilha.xlsx>" DD/MM/AAAA
 
 Regras:
-- Veículos cuja coluna "Situacao" seja Pedido ou Proposta são descartados por completo
+- Veículos cuja coluna "Situacao" esteja preenchida (Pedido, Proposta, Bloqueado) são descartados por completo
   (não entram em nenhum número, lista ou texto da apresentação).
 - Capital = Valor Compra. Aging = "Dias Estoque". Aging ponderado = pesado pelo capital.
 """
@@ -14,7 +14,7 @@ import sys
 
 import pandas as pd
 
-EXCLUIR_SITUACAO = {"PEDIDO", "PROPOSTA"}
+EXCLUIR_SITUACAO = {"PEDIDO", "PROPOSTA", "BLOQUEADO"}
 TAXA_CDI = 0.000366
 MARCAS = ["CHERY", "CHANGAN", "HMB", "FORD"]
 
