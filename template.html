@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CAOA Seminovos · Giro de estoque e custo do dinheiro · 05/11/2026</title>
+<title>CAOA Seminovos · Giro de estoque e custo do dinheiro · __DATA_BASE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script>
 /* =====================================================================
    DADOS — edite os números aqui (sem mexer no layout).
-   Fonte: planilha Estoque_SN_0511 (posição 05/11/2026) e PPT do
-   Financeiro "Estoque VU – Capital, aging e custo financeiro" (28/10/2026).
+   Fonte: planilha de estoque de seminovos (posição __DATA_BASE__),
+   processada por extract.py.
    ===================================================================== */
 const DADOS = __DADOS__;
 </script>
@@ -124,7 +124,7 @@ svg text{font-family:'Inter',sans-serif}
 .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px}
 .pillar{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px 18px;cursor:pointer;transition:transform .2s,border-color .2s,background .2s}
 .pillar:hover{transform:translateY(-3px);border-color:var(--mint);background:rgba(100,194,149,.08)}
-.pillar .pv{font-size:28px;font-weight:900;letter-spacing:-.5px}
+.pillar .pv{font-size:26px;font-weight:900;letter-spacing:-.5px;white-space:nowrap}
 .pillar .pl{font-size:12px;color:#AEB8CF;font-weight:600;margin-top:4px}
 .cover-hint{margin-top:26px;font-size:12.5px;color:#8F9AB5}
 .qr-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:24px;text-align:center;backdrop-filter:blur(10px);box-shadow:0 20px 50px rgba(0,0,0,.35);cursor:pointer;transition:transform .2s,border-color .2s,background .2s}
@@ -223,6 +223,58 @@ table.dt{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px}
 .prem label{display:block;margin-bottom:12px}
 .prem .ill{font-size:11px;font-weight:800;color:#A4511A;background:#FDEBDD;padding:2px 7px;border-radius:5px;margin-left:6px}
 
+/* ---------- Acabamento premium (v2) ---------- */
+.slide:not(.cover){background:radial-gradient(1200px 520px at 100% 0%,rgba(100,194,149,.07),transparent 60%),radial-gradient(900px 500px at 0% 100%,rgba(21,69,120,.05),transparent 60%),var(--bg)}
+.slide:not(.cover)::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--mint),var(--navy3))}
+.title{font-size:36px;font-weight:900;letter-spacing:-.9px}
+.title em{font-style:normal;color:var(--mint2)}
+.tag .tn{color:var(--mint2);margin-right:2px}
+.card{transition:box-shadow .25s,transform .25s}
+.card:hover{box-shadow:0 2px 4px rgba(16,24,40,.05),0 12px 28px rgba(16,24,40,.08)}
+.kpi .val.sm{font-size:40px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mut);font-weight:600}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:18px;height:3px;border-radius:2px;display:inline-block}
+.cover-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.cover-meta span{font-size:12.5px;font-weight:600;color:#C5CEE0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:999px}
+.cover-meta b{color:#fff}
+.realrow{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:10px;margin-top:10px;border-top:1px solid var(--line);padding-top:12px}
+.realrow label{font-size:11.5px;font-weight:700;color:var(--mut);display:block;margin-bottom:4px}
+.realrow input{width:100%;height:34px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-size:13px;font-weight:700;color:var(--navy);text-align:right}
+.realrow input:focus{outline:2px solid rgba(100,194,149,.5);border-color:var(--mint)}
+table.heat{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:13.5px}
+.heat th{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut2);text-align:right;padding:0 10px 2px;white-space:nowrap}
+.heat th:first-child{text-align:left}
+.heat td{padding:9px 10px;text-align:right;font-weight:700;color:var(--navy);background:#F7F9FC}
+.heat td:first-child{text-align:left;border-radius:9px 0 0 9px}
+.heat td:last-child{border-radius:0 9px 9px 0}
+.heat tr.row{cursor:pointer;transition:transform .15s}
+.heat tr.row:hover td{filter:brightness(.97)}
+.heat tr.row.sel td{box-shadow:inset 0 2px 0 var(--navy),inset 0 -2px 0 var(--navy)}
+.heat tr.row.sel td:first-child{box-shadow:inset 2px 2px 0 var(--navy),inset 0 -2px 0 var(--navy)}
+.heat tr.row.sel td:last-child{box-shadow:inset -2px 2px 0 var(--navy),inset 0 -2px 0 var(--navy)}
+.heat .hc{color:#fff}
+.heat .rg{font-weight:900}
+.heat .rg small{display:block;font-size:11px;color:var(--mut2);font-weight:600}
+.lrow{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 0;border-bottom:1px solid #EEF1F6;font-size:13.5px}
+.lrow .ln{font-weight:800;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lrow .lv{font-weight:900;color:var(--w);text-align:right}
+.lrow .ls{font-size:11.5px;color:var(--mut2)}
+.lrow .btrack{grid-column:1/-1;height:7px}
+.closing{background:linear-gradient(150deg,#1D184B,#120E33);color:#fff;border:0;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.closing::after{content:'';position:absolute;right:-120px;top:-120px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(100,194,149,.28),transparent 70%)}
+.closing-h{font-size:38px;font-weight:900;line-height:1.12;letter-spacing:-1px;margin:16px 0 18px}
+.closing-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.closing-kpis div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;font-size:12px;color:#AEB8CF;font-weight:600}
+.closing-kpis b{display:block;font-size:24px;color:#fff;font-weight:900;letter-spacing:-.4px}
+.fbar.narrow{justify-content:center;padding:0 12px}
+.fbar .fv{white-space:nowrap}
+.fbar.narrow .fv{font-size:21px}
+.fbar.narrow .fq{display:none}
+.fout{font-size:13px;font-weight:700;color:var(--mut);margin-left:12px;white-space:nowrap;align-self:center}
+.ftrack{align-items:center}
+
 /* =====================================================================
    VERSÃO MOBILE (≤ 820 px ou botão "Modo mobile" / link ?mobile=1)
    ===================================================================== */
@@ -244,6 +296,17 @@ body.mobile .kpi{padding:14px}
 body.mobile .kpi .val{font-size:28px}
 body.mobile .kpi .val small{font-size:13px}
 body.mobile .card{padding:16px;border-radius:14px}
+body.mobile .grid2{grid-template-columns:1fr}
+body.mobile .realrow{grid-template-columns:repeat(2,1fr)}
+body.mobile .closing-h{font-size:26px}
+body.mobile .slide:not(.cover)::before{display:none}
+body.mobile .heat{font-size:12px}
+body.mobile .heat td,body.mobile .heat th{padding:7px 6px}
+body.mobile .heat th:nth-child(2),body.mobile .heat td:nth-child(2),body.mobile .heat th:nth-child(3),body.mobile .heat td:nth-child(3),body.mobile .heat th:nth-child(5),body.mobile .heat td:nth-child(5){display:none}
+body.mobile .fbar{min-width:140px!important}
+body.mobile .fbar.narrow .fv,body.mobile .fbar .fv{font-size:16px}
+body.mobile .fout{font-size:11.5px;margin-left:8px}
+body.mobile .realrow input{font-size:12px}
 body.mobile .sf{flex-direction:column;align-items:flex-start;gap:6px;font-size:11px}
 body.mobile .slide.cover{padding:36px 18px 30px;min-height:calc(100vh - 52px)}
 body.mobile .cover-grid{grid-template-columns:1fr;gap:20px}
@@ -314,7 +377,7 @@ body.mobile .stackm{flex-direction:column!important}
 
 <header class="topbar">
   <div class="tb-left">
-    <span class="tb-title"><b>Estoque SN</b> · Giro, margem e capital parado · posição 05/11/2026</span>
+    <span class="tb-title"><b>Estoque SN</b> · Giro, margem e capital parado · posição __DATA_BASE__</span>
   </div>
   <div class="tb-right">
     <button class="tbtn" id="bPrev" onclick="prev()" title="Anterior (←)">‹</button>
@@ -340,15 +403,16 @@ body.mobile .stackm{flex-direction:column!important}
         <div class="div"></div>
         <span>Comitê Executivo</span>
       </div>
-      <div class="cover-tag anim" style="--d:.08s"><i></i>Estoque de seminovos · posição 05/11/2026</div>
+      <div class="cover-tag anim" style="--d:.08s"><i></i>Estoque de seminovos · posição __DATA_BASE__</div>
       <h1 class="anim" style="--d:.14s">Giro de estoque e custo do dinheiro: <span>plano de saída dos &gt;90 dias</span></h1>
       <p class="cover-desc anim" style="--d:.2s">Giro rápido libera caixa e reduz o custo do dinheiro parado (CDI). Vender para revendedor sacrifica margem unitária, mas a <b>margem econômica por chassi</b> pode ser melhor do que carregar o carro.</p>
       <div class="pillars anim" style="--d:.28s">
-        <div class="pillar" onclick="go(1)"><div class="pv" id="cvVeic">—</div><div class="pl">veículos em estoque</div></div>
-        <div class="pillar" onclick="go(2)"><div class="pv" id="cvCap">—</div><div class="pl">capital (valor de compra)</div></div>
-        <div class="pillar" onclick="go(4)"><div class="pv" style="color:#FF8A8A" id="cvCrit">—</div><div class="pl">carros acima de 90 dias</div></div>
-        <div class="pillar" onclick="go(7)"><div class="pv" style="color:var(--mintL)" id="cvCritCap">—</div><div class="pl">capital acima de 90 dias</div></div>
+        <div class="pillar" onclick="go('sintese')"><div class="pv" id="cvVeic">—</div><div class="pl">veículos em estoque</div></div>
+        <div class="pillar" onclick="go('funil')"><div class="pv" id="cvCap">—</div><div class="pl">capital (valor de compra)</div></div>
+        <div class="pillar" onclick="go('onde')"><div class="pv" style="color:#FF8A8A" id="cvCrit">—</div><div class="pl">carros acima de 90 dias</div></div>
+        <div class="pillar" onclick="go('tabela')"><div class="pv" style="color:var(--mintL)" id="cvCritCap">—</div><div class="pl">capital acima de 90 dias</div></div>
       </div>
+      <div class="cover-meta anim" style="--d:.33s" id="cvMeta"></div>
       <div class="cover-hint anim hide-m" style="--d:.36s">Navegue com ← → · clique nos cartões para ir direto ao tema · <b>I</b> abre o índice</div>
       <div class="swipe-hint">↓ Role para ver todos os slides</div>
     </div>
@@ -362,16 +426,16 @@ body.mobile .stackm{flex-direction:column!important}
 </section>
 
 <!-- =============================== 2. SÍNTESE =============================== -->
-<section class="slide" data-title="Síntese">
+<section class="slide" data-id="sintese" data-title="Síntese">
   <div class="sh">
-    <div><div class="tag"><i></i>01 · Síntese</div>
+    <div><div class="tag"><i></i>Síntese</div>
       <h2 class="title" id="s2title">—</h2>
       <div class="insight">Estoque saudável na maior parte; o problema está concentrado e é <b>tratável chassi a chassi</b>.</div></div>
     <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
   </div>
   <div class="col" style="flex:1;min-height:0">
     <div class="grid4">
-      <div class="card kpi anim" style="--d:.05s"><div class="lbl">Veículos</div><div class="val" data-count="veic">0</div><div class="sub">estoque total em 05/11</div></div>
+      <div class="card kpi anim" style="--d:.05s"><div class="lbl">Veículos</div><div class="val" data-count="veic">0</div><div class="sub">em estoque · posição __DATA_BASE__</div></div>
       <div class="card kpi anim" style="--d:.1s;border-top-color:var(--mint2)"><div class="lbl">Capital</div><div class="val"><span data-count="capMM">0</span> <small>R$ MM</small></div><div class="sub">valor de compra</div></div>
       <div class="card kpi anim" style="--d:.15s;border-top-color:var(--y)"><div class="lbl">Aging médio</div><div class="val"><span data-count="aging">0</span> <small>dias</small></div><div class="sub">ponderado pelo capital</div></div>
       <div class="card kpi anim" style="--d:.2s;border-top-color:var(--w)"><div class="lbl">CDI estimado &gt;90 dias</div><div class="val"><span data-count="cdiMil">0</span> <small>R$ mil</small></div><div class="sub" id="s2cdiSub">—</div></div>
@@ -386,19 +450,19 @@ body.mobile .stackm{flex-direction:column!important}
       </div>
       <div class="card anim" style="--d:.3s;flex:1">
         <h3>Capital por marca</h3>
-        <p class="hint">Estoque total · posição 05/11</p>
+        <p class="hint">Capital, aging médio e carros acima de 90 dias</p>
         <div id="s2brands"></div>
       </div>
     </div>
   </div>
-  <div class="sf"><span>Bases com recortes distintos: o PPT do Financeiro (28/10) considera <b id="s2ppt">—</b>; esta base (05/11) considera o estoque total da planilha. CDI estimado = <code>valor de compra × dias × taxa diária</code>, somado chassi a chassi.</span><span class="pg"></span></div>
+  <div class="sf"><span>Base: planilha de estoque de seminovos, posição __DATA_BASE__. Capital = valor de compra. Aging ponderado pelo capital. CDI estimado = <code>valor de compra × dias × taxa diária</code>, somado chassi a chassi.</span><span class="pg"></span></div>
 </section>
 
 <!-- =============================== 3. FUNIL =============================== -->
-<section class="slide" data-title="Funil de aging">
+<section class="slide" data-id="funil" data-title="Funil de aging">
   <div class="sh">
-    <div><div class="tag"><i></i>02 · Funil de aging</div>
-      <h2 class="title">Metade do capital está em até 30 dias; o funil afina, mas não fecha</h2>
+    <div><div class="tag"><i></i>Funil de aging</div>
+      <h2 class="title" id="s3title">—</h2>
       <div class="insight">Largura proporcional ao capital. <b>Clique numa faixa</b> para ver o detalhe por marca.</div></div>
     <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
   </div>
@@ -406,20 +470,20 @@ body.mobile .stackm{flex-direction:column!important}
     <div class="card" style="flex:1.7"><div class="funnel" id="funnel"></div></div>
     <div class="card drawer anim" style="flex:1;--d:.2s" id="drawer"></div>
   </div>
-  <div class="sf"><span>Régua de decisão do Financeiro (28/10): 0–30 Normal · 31–45 Atenção · 46–60 Ação comercial · 61–90 Prioridade · &gt;90 Crítico. % do capital = <code>capital da faixa ÷ capital total</code>.</span><span class="pg"></span></div>
+  <div class="sf"><span>Régua de decisão do Financeiro: 0–30 Normal · 31–45 Atenção · 46–60 Ação comercial · 61–90 Prioridade · &gt;90 Crítico. % do capital = <code>capital da faixa ÷ capital total</code>.</span><span class="pg"></span></div>
 </section>
 
 <!-- =============================== 4. CDI =============================== -->
-<section class="slide" data-title="Valor do dinheiro parado">
+<section class="slide" data-id="cdi" data-title="Valor do dinheiro parado">
   <div class="sh">
-    <div><div class="tag"><i></i>03 · Valor do dinheiro parado</div>
+    <div><div class="tag"><i></i>Valor do dinheiro parado</div>
       <h2 class="title" id="s4title">—</h2>
       <div class="insight">O custo cresce todo dia, sem aparecer na margem bruta. <b>Clique numa barra</b> para levá-la à calculadora.</div></div>
     <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
   </div>
   <div class="sb">
     <div class="card anim" style="flex:1.35;display:flex;flex-direction:column">
-      <h3>CDI acumulado de um carro de R$ 100 mil</h3>
+      <h3 id="s4chartT">CDI acumulado de um carro de R$ 100 mil</h3>
       <p class="hint">Custo do dinheiro parado por dias em estoque</p>
       <div id="s4chart" style="flex:1;min-height:0"></div>
     </div>
@@ -437,13 +501,13 @@ body.mobile .stackm{flex-direction:column!important}
       <div class="callout warn" style="margin-top:14px;font-size:13.5px" id="s4crit"></div>
     </div>
   </div>
-  <div class="sf"><span>Premissa: CDI ≈ <b id="s4taxa">—</b> ao dia, derivada do PPT do Financeiro (R$ 102.000 × 117 dias = R$ 4.361). Fórmula: <code>custo = valor × dias × taxa diária</code> (juros simples, como no PPT).</span><span class="pg"></span></div>
+  <div class="sf"><span>Premissa: CDI ≈ <b id="s4taxa">—</b> ao dia (taxa do Financeiro, ajustável em ⚙ Premissas). Fórmula: <code>custo = valor × dias × taxa diária</code> (juros simples).</span><span class="pg"></span></div>
 </section>
 
 <!-- =============================== 5. ONDE ESTÁ O PROBLEMA =============================== -->
-<section class="slide" data-title="Onde está o problema">
+<section class="slide" data-id="onde" data-title="Onde está o problema">
   <div class="sh">
-    <div><div class="tag"><i></i>04 · Onde está o problema</div>
+    <div><div class="tag"><i></i>Onde está o problema</div>
       <h2 class="title" id="s5title">—</h2>
       <div class="insight">Marcas pedem ações diferentes: <b>volume</b> pede liberação de capital; <b>aging</b> pede ação comercial imediata.</div></div>
     <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
@@ -462,13 +526,30 @@ body.mobile .stackm{flex-direction:column!important}
       <div class="card anim" style="--d:.2s;flex:1"><h3>Por tipo de estoque</h3><p class="hint">Carros &gt;90 dias</p><div id="s5tipos"></div></div>
     </div>
   </div>
-  <div class="sf"><span>Margem bruta sobre preço público: &gt;90 dias <b id="s5mb1">—</b> · até 90 dias <b id="s5mb2">—</b>. Valor de compra dos &gt;90 dias em média <b id="s5fipe">—</b> vs. FIPE atual. Aging médio = média simples dos chassis da marca.</span><span class="pg"></span></div>
+  <div class="sf"><span>Margem bruta sobre preço público: &gt;90 dias <b id="s5mb1">—</b> · até 90 dias <b id="s5mb2">—</b>. Valor de compra dos &gt;90 dias <b id="s5fipe">—</b> da FIPE atual (soma da compra ÷ soma da FIPE). Aging médio = média simples dos chassis da marca.</span><span class="pg"></span></div>
 </section>
 
-<!-- =============================== 6. DEFESA DA MARGEM =============================== -->
-<section class="slide" data-title="A defesa da margem">
+<!-- =============================== RAIO-X DA REDE =============================== -->
+<section class="slide" data-id="rede" data-title="Raio-X da rede">
   <div class="sh">
-    <div><div class="tag"><i></i>05 · A defesa da margem</div>
+    <div><div class="tag"><i></i>Raio-X da rede</div>
+      <h2 class="title" id="rxTitle">—</h2>
+      <div class="insight">Mapa de calor por regional: quanto mais escuro, maior o risco. <b>Clique numa regional</b> para ver as lojas que mais pesam.</div></div>
+    <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
+  </div>
+  <div class="sb">
+    <div class="card anim" style="flex:1.45;display:flex;flex-direction:column;min-height:0">
+      <h3>Regionais</h3><p class="hint">Ordenadas pelo capital acima de 90 dias</p>
+      <div style="flex:1;min-height:0;overflow:auto"><table class="heat" id="rxHeat"></table></div>
+    </div>
+    <div class="card anim drawer" style="flex:1;--d:.15s;display:flex;flex-direction:column;min-height:0" id="rxDrawer"></div>
+  </div>
+  <div class="sf"><span>% &gt;60 dias = capital com mais de 60 dias ÷ capital da regional. Aging ponderado pelo capital. Lojas agrupadas pela coluna Empresa; regional conforme planilha.</span><span class="pg"></span></div>
+</section>
+<!-- =============================== 6. DEFESA DA MARGEM =============================== -->
+<section class="slide" data-id="margem" data-title="A defesa da margem">
+  <div class="sh">
+    <div><div class="tag"><i></i>A defesa da margem</div>
       <h2 class="title">Vender agora × manter: o desconto vale a pena quando custa menos que a espera</h2>
       <div class="insight">Margem econômica = <b>preço − compra − CDI − despesas</b>. Ajuste os controles e veja o ponto de equilíbrio.</div></div>
     <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
@@ -503,9 +584,9 @@ body.mobile .stackm{flex-direction:column!important}
 </section>
 
 <!-- =============================== 7. PLANO =============================== -->
-<section class="slide" data-title="Plano de reprecificação">
+<section class="slide" data-id="plano" data-title="Plano de reprecificação">
   <div class="sh">
-    <div><div class="tag"><i></i>06 · Plano de ação</div>
+    <div><div class="tag"><i></i>Plano de ação</div>
       <h2 class="title">Régua de reprecificação em 4 degraus, com meta em capital liberado</h2>
       <div class="insight">Cada chassi entra no degrau indicado pela regra da tabela e avança se não vender. <b>Clique num degrau</b> para ver os carros.</div></div>
     <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
@@ -521,13 +602,13 @@ body.mobile .stackm{flex-direction:column!important}
       <div id="stList" style="flex:1;min-height:0;overflow:auto;margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:start"></div>
     </div>
   </div>
-  <div class="sf"><span>Regra de entrada: classe D/E e &gt;120 d → revendedor/leilão; classe A/B e ≤120 d → reprecificar −2% a −4%. Complementares (sugestão): C/D/E ≤120 d → campanha; A/B/C &gt;120 d → oferta a revendedor. Responsáveis sugeridos, a confirmar.</span><span class="pg"></span></div>
+  <div class="sf"><span>Regra de entrada (cada chassi em um único degrau): classe A/B até 120 d → reprecificar; classe D/E acima de 120 d ou origem leilão → revendedor, ou leilão/transferência se acima de 150 d ou classe E; acima de 180 d → leilão/transferência; demais → campanha. Responsáveis sugeridos, a confirmar.</span><span class="pg"></span></div>
 </section>
 
 <!-- =============================== 8. TABELA =============================== -->
-<section class="slide" data-title="Chassis críticos">
+<section class="slide" data-id="tabela" data-title="Chassis críticos">
   <div class="sh">
-    <div><div class="tag"><i></i>07 · Lista de chassis críticos</div>
+    <div><div class="tag"><i></i>Lista de chassis críticos</div>
       <h2 class="title" id="tTitle">—</h2>
       <div class="insight">Filtre, ordene (clique no cabeçalho) e <b>clique numa linha</b> para ver a conta do chassi.</div></div>
     <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
@@ -550,46 +631,54 @@ body.mobile .stackm{flex-direction:column!important}
       </table>
     </div>
   </div>
-  <div class="sf"><span>CDI estimado = <code>valor de compra × dias × taxa diária</code>. % vs FIPE e Classe da mesa conforme planilha. Ação sugerida pela regra do slide anterior.</span><span class="pg"></span></div>
+  <div class="sf"><span>CDI estimado = <code>valor de compra × dias × taxa diária</code>. Var. FIPE = FIPE atual vs. FIPE da avaliação (desvalorização no período). Ação sugerida pela régua do plano de ação.</span><span class="pg"></span></div>
 </section>
 
-<!-- =============================== 9. RESULTADOS =============================== -->
-<section class="slide" data-title="Resultados desde 28/10">
+<!-- =============================== 9. META E RITMO =============================== -->
+<section class="slide" data-id="meta" data-title="Meta e ritmo semanal">
   <div class="sh">
-    <div><div class="tag"><i></i>08 · Resultados desde 28/10</div>
-      <h2 class="title">Antes × agora: o placar que vamos acompanhar toda semana</h2>
-      <div class="insight">Os campos em branco são editáveis e ficam salvos neste navegador. <b>Preencha com a lista de placas de 28/10.</b></div></div>
+    <div><div class="tag"><i></i>Meta e ritmo semanal</div>
+      <h2 class="title" id="mtTitle">—</h2>
+      <div class="insight">Zerar o estoque crítico exige vender os carros que já estão acima de 90 dias <b>e</b> os que vão chegar lá. A linha verde é o ritmo necessário; registre o realizado a cada semana.</div></div>
     <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
   </div>
   <div class="sb">
-    <div class="card anim" style="flex:1">
-      <h3>Placar</h3><p class="hint">Carros acima de 90 dias</p>
-      <table class="wf" id="rTable" style="font-size:15px"></table>
-      <div class="callout warn" style="font-size:13.5px">O PPT de 28/10 traz exemplos de chassis, mas não a lista completa acima de 90 dias. Sem ela não é possível calcular as saídas com segurança — por isso os campos estão em aberto.</div>
+    <div class="col" style="flex:1;gap:14px">
+      <div class="grid2">
+        <div class="card kpi anim" style="--d:.05s;border-top-color:var(--w)"><div class="lbl">Já acima de 90 dias</div><div class="val sm" id="mtHoje">—</div><div class="sub" id="mtHojeS">—</div></div>
+        <div class="card kpi anim" style="--d:.1s;border-top-color:var(--o)"><div class="lbl">Chegam aos 90 em 4 sem.</div><div class="val sm" id="mtEntr">—</div><div class="sub" id="mtEntrS">—</div></div>
+      </div>
+      <div class="card anim" style="--d:.15s;flex:1;min-height:0;display:flex;flex-direction:column">
+        <h3>Ritmo necessário por semana</h3><p class="hint">Para estancar os &gt;90 dias no prazo do plano · semanas ajustáveis em ⚙ Premissas</p>
+        <table class="wf" id="mtTable" style="font-size:14px"></table>
+      </div>
     </div>
-    <div class="card anim" style="flex:1.2;display:flex;flex-direction:column;--d:.15s">
-      <h3>Evolução</h3><p class="hint" id="rHint">Preencha os campos para gerar o comparativo</p>
-      <div id="rChart" style="flex:1;min-height:0"></div>
-      <div class="kv" style="margin:12px 0 0;grid-template-columns:repeat(3,1fr)" id="rKpis"></div>
+    <div class="card anim" style="flex:1.35;display:flex;flex-direction:column;--d:.2s">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div><h3>Capital acima de 90 dias: meta × realizado</h3><p class="hint">Sem ação, os entrantes empurram o crítico para cima (linha tracejada)</p></div>
+        <div id="mtLegend" class="legend"></div>
+      </div>
+      <div id="mtChart" style="flex:1;min-height:0"></div>
+      <div class="realrow" id="mtInputs"></div>
     </div>
   </div>
-  <div class="sf"><span>Variação = <code>agora − 28/10</code>. Capital liberado = soma do valor de compra dos chassis vendidos/baixados no período. Referência do PPT (outro recorte): <span id="rRef"></span>.</span><span class="pg"></span></div>
+  <div class="sf"><span>Entrantes = carros com 63–90 dias hoje, agrupados pela semana em que completam 91 dias se não forem vendidos. Projeção sem ação = crítico atual + entrantes acumulados. Valores realizados ficam salvos neste navegador.</span><span class="pg"></span></div>
 </section>
-
-<!-- =============================== 10. DECISÃO =============================== -->
-<section class="slide" data-title="Pedido de decisão">
+<!-- =============================== 10. DECISÕES =============================== -->
+<section class="slide" data-id="decisoes" data-title="Decisões para o comitê">
   <div class="sh">
-    <div><div class="tag"><i></i>09 · Pedido de decisão</div>
+    <div><div class="tag"><i></i>Decisões para o comitê</div>
       <h2 class="title">Cinco decisões para transformar estoque em caixa</h2>
       <div class="insight">Marque o que foi aprovado na reunião — fica registrado neste navegador.</div></div>
     <img class="hlogo" src="__LOGO_NAVY__" alt="CAOA">
   </div>
   <div class="sb stackm" style="flex-direction:row">
     <div class="col" style="flex:1.6;gap:12px" id="resList"></div>
-    <div class="card anim" style="flex:1;background:linear-gradient(150deg,#1D184B,#120E33);color:#fff;border:0;display:flex;flex-direction:column;justify-content:space-between;--d:.3s">
+    <div class="card anim closing" style="flex:1;--d:.3s">
       <div>
         <div class="tag" style="color:var(--mintL)"><i></i>Resultado esperado</div>
-        <div style="font-size:40px;font-weight:900;line-height:1.12;letter-spacing:-1px;margin:18px 0">Mais caixa, menor aging, melhor retorno sobre capital.</div>
+        <div class="closing-h">Mais caixa, menor aging, melhor retorno sobre capital.</div>
+        <div class="closing-kpis" id="dKpis"></div>
         <div style="font-size:14.5px;color:#C5CEE0;line-height:1.55" id="dSum"></div>
       </div>
       <div>
@@ -598,9 +687,8 @@ body.mobile .stackm{flex-direction:column!important}
       </div>
     </div>
   </div>
-  <div class="sf"><span>Meta semanal sugerida = <code>capital &gt;90 dias ÷ semanas do plano</code>. Alçada: desconto máximo = CDI dos dias que o carro ainda ficaria parado ± diferença de despesas (slide 6).</span><span class="pg"></span></div>
+  <div class="sf"><span>Meta semanal = <code>(capital &gt;90 dias + entrantes do período) ÷ semanas do plano</code>. Alçada: desconto máximo = CDI dos dias que o carro ainda ficaria parado ± diferença de despesas (slide da margem).</span><span class="pg"></span></div>
 </section>
-
 </div></main>
 
 <!-- Modais -->
@@ -619,10 +707,10 @@ body.mobile .stackm{flex-direction:column!important}
       <label><span class="f">Despesa média de saída — revendedor (R$) <span class="ill">ILUSTRATIVO</span></span><input class="tx num" type="number" step="100" id="pDr"></label>
     </div>
     <div class="callout" style="font-size:13px;margin-top:6px;line-height:1.6">
-      <b>Taxa CDI:</b> 0,0366% a.d. derivada do PPT (R$ 4.361 ÷ (R$ 102.000 × 117 d)). <br>
+      <b>Taxa CDI:</b> 0,0366% a.d. — premissa do Financeiro, ajustável acima. <br>
       <b>CDI por chassi:</b> valor de compra × dias em estoque × taxa diária. <br>
       <b>Margem econômica:</b> preço provável de venda − valor contábil − CDI acumulado − despesas/desconto. <br>
-      <b>Bases:</b> PPT 28/10 = 1.333 veículos “Liberado” (R$ 110,4 MM; CDI R$ 1,48 MM = 1,34%; aging 34,4 d). Base 05/11 = estoque total da planilha. Recortes distintos.
+      <b>Base:</b> planilha de estoque de seminovos, posição __DATA_BASE__.
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn ghost" onclick="resetPremissas()">Restaurar padrão</button><button class="btn" onclick="salvarPremissas()">Aplicar</button></div>
   </div>
