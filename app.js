@@ -142,8 +142,9 @@ function setupScaling() {
 
   const vw = vp.clientWidth;
   const vh = vp.clientHeight;
-  const scale = Math.min((vw - 32) / 1600, (vh - 20) / 900);
-  stage.style.transform = `scale(${Math.max(scale, 0.25)})`;
+  const mx = vw < 900 ? 6 : 32, my = vh < 520 ? 4 : 20;
+  const scale = Math.min((vw - mx) / 1600, (vh - my) / 900);
+  stage.style.transform = `scale(${Math.max(scale, 0.1)})`;
 }
 
 // Contadores animados nos slides
@@ -214,7 +215,7 @@ function initQR() {
     targetUrl = window.location.href;
     if (window.location.protocol === 'file:') {
       // Fallback para simulação local
-      targetUrl = window.location.href + (window.location.search ? '&' : '?') + 'mobile=1';
+      targetUrl = window.location.href.split('?')[0];
     }
   }
 
@@ -1090,7 +1091,7 @@ function renderStepList(idx) {
   const btnOpen = document.getElementById('stOpen');
   const filtroCarros = carrosDoDegrau(idx).sort((a, b) => b.dias - a.dias);
 
-  if (title) title.innerText = `${d.when} · ${d.title}: ${filtroCarros.length} chassis, maiores agings primeiro`;
+  if (title) title.innerText = `${d.when} · ${d.title}: ${filtroCarros.length} chassis${filtroCarros.length > 6 ? ' · os 6 de maior aging' : ''}`;
   if (btnOpen) btnOpen.onclick = () => {
     const fAcao = document.getElementById('fAcao');
     if (fAcao) { fAcao.value = ACOES[idx].k; aplicarFiltros(); }
@@ -1099,7 +1100,7 @@ function renderStepList(idx) {
 
   if (!list) return;
   list.innerHTML = '';
-  filtroCarros.slice(0, 9).forEach(c => {
+  filtroCarros.slice(0, 6).forEach(c => {
     const item = document.createElement('div');
     item.style.cssText = `background:#F7F9FC;border:1px solid var(--line);border-left:4px solid ${d.cor};border-radius:8px;padding:8px 10px;cursor:pointer`;
     item.onclick = () => abrirModalCarro(DADOS.veiculos.indexOf(c));
@@ -1171,11 +1172,12 @@ function selRegional(reg) {
     </div>
     <h3 style="font-size:14px;margin:4px 0 2px">Lojas por capital acima de 90 dias</h3>
     <div style="flex:1;min-height:0;overflow:auto">
-      ${lojas.map(l => `<div class="lrow">
+      ${lojas.slice(0, 6).map(l => `<div class="lrow">
         <span class="ln">${l.loja}</span><span class="lv">${l.capitalCritico ? fmtMM2(l.capitalCritico) : '—'}</span>
         <span class="ls">${l.veiculos} veíc · ${fmtMM(l.capital)} · aging ${String(l.aging).replace('.', ',')} d · ${l.acima60} acima de 60 d</span><span class="ls" style="text-align:right">${l.criticos} &gt;90 d</span>
         <div class="btrack"><div style="width:${l.capitalCritico / maxL * 100}%;background:var(--w)"></div></div>
       </div>`).join('')}
+      ${lojas.length > 6 ? `<div style="font-size:12px;color:var(--mut2);padding-top:8px">+ ${lojas.length - 6} lojas com menor capital acima de 90 dias</div>` : ''}
     </div>
     ${r.criticos ? `<button class="btn" style="width:100%;margin-top:12px" onclick="filtrarRegional('${reg}')">Ver os ${r.criticos} chassis críticos da regional →</button>` : ''}
   `;
@@ -1277,6 +1279,7 @@ function sortTabela(col) {
     tabSortCol = col;
     tabSortAsc = false;
   }
+  tabPagina = 0;
   renderTableHeader();
   ordenarEExibir();
 }
@@ -1289,6 +1292,7 @@ function aplicarFiltros() {
   const fFaixa = document.getElementById('fFaixa')?.value || '';
   const fAcao = document.getElementById('fAcao')?.value || '';
 
+  tabPagina = 0;
   tabFiltrados = DADOS.veiculos.filter(c => {
     if (busca && !c.modelo.toLowerCase().includes(busca) && !c.placa.toLowerCase().includes(busca) && !c.empresa.toLowerCase().includes(busca)) {
       return false;
@@ -1354,11 +1358,17 @@ function renderTableBody() {
 
   if (tabFiltrados.length === 0) {
     tBody.innerHTML = `<tr><td colspan="10" class="empty">Nenhum veículo encontrado com os filtros selecionados.</td></tr>`;
+    const pg = document.getElementById('tPager'); if (pg) pg.innerHTML = '';
     if (tFoot) tFoot.innerHTML = '';
     return;
   }
 
-  tBody.innerHTML = tabFiltrados.map(c => {
+  const POR_PAG = 10;
+  const nPag = Math.max(1, Math.ceil(tabFiltrados.length / POR_PAG));
+  if (tabPagina >= nPag) tabPagina = nPag - 1;
+  const pager = document.getElementById('tPager');
+  if (pager) pager.innerHTML = `<button onclick="mudarPagina(-1)" ${tabPagina === 0 ? 'disabled' : ''}>‹</button><span>Página ${tabPagina + 1} de ${nPag}</span><button onclick="mudarPagina(1)" ${tabPagina >= nPag - 1 ? 'disabled' : ''}>›</button>`;
+  tBody.innerHTML = tabFiltrados.slice(tabPagina * POR_PAG, (tabPagina + 1) * POR_PAG).map(c => {
     const cdi = c.valorCompra * c.dias * taxa;
     const ac = ACOES[degrauDe(c)];
     const acaoSug = ac.label;
@@ -1392,6 +1402,9 @@ function renderTableBody() {
     `;
   }
 }
+
+let tabPagina = 0;
+function mudarPagina(d) { tabPagina = Math.max(0, tabPagina + d); renderTableBody(); }
 
 function limparFiltros() {
   ['fBusca', 'fMarca', 'fLoja', 'fTipo', 'fFaixa', 'fAcao'].forEach(id => {
@@ -1710,7 +1723,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Verifica URL param ?mobile=1
   const params = new URLSearchParams(window.location.search);
-  if (params.get('mobile') === '1' || window.innerWidth <= 820) {
+  if (params.get('mobile') === '1') {
     toggleMobile();
   } else {
     setupScaling();
